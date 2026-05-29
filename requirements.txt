@@ -1,0 +1,145 @@
+# ─────────────────────────────────────────────────────────────
+  # CORE ML
+  # ─────────────────────────────────────────────────────────────
+
+  # PyTorch — the deep learning framework everything runs on.
+  # LayoutLMv3, training, and inference all use PyTorch under the hood.
+  torch==2.6.0
+
+  # HuggingFace Transformers — gives us LayoutLMv3 pretrained model,
+  # tokenizer, and processor. One library handles model loading,
+  # fine-tuning, and inference without writing model architecture from scratch.
+  transformers==4.44.0
+
+  # HuggingFace Datasets — downloads and manages DocVQA dataset directly
+  # from HuggingFace Hub. Handles caching, splits (train/val/test),
+  # and streaming for large datasets.
+  datasets==2.20.0
+
+  # Accelerate — HuggingFace library that handles training on CPU, GPU,
+  # or multi-GPU without changing any training code. Makes fine-tuning
+  # portable across hardware.
+  accelerate==0.33.0
+
+  # Evaluate — HuggingFace evaluation library. Provides standard
+  # implementations of Exact Match (EM) and F1 score — same metrics
+  # used in the original DocVQA benchmark paper.
+  evaluate==0.4.2
+
+  # timm (PyTorch Image Models) — required by LayoutLMv3 internally
+  # for its vision encoder. Not called directly in our code but
+  # LayoutLMv3 imports it under the hood.
+  timm==1.0.9
+
+
+  # ─────────────────────────────────────────────────────────────
+  # DOCUMENT PROCESSING
+  # ─────────────────────────────────────────────────────────────
+
+  # pytesseract — Python wrapper for Tesseract OCR engine.
+  # Extracts text AND bounding box coordinates (word positions)
+  # from document images. Bounding boxes are what give LayoutLMv3
+  # its layout understanding — not just what words say, but where they are.
+  pytesseract==0.3.10
+
+  # opencv-python-headless — OpenCV for image preprocessing.
+  # Handles grayscale conversion, deskewing, denoising, binarization,
+  # and contrast enhancement before OCR runs. Image quality directly
+  # caps model accuracy — this is the preprocessing pipeline.
+  # "headless" version = no GUI dependencies, lighter for Docker.
+  opencv-python-headless==4.10.0.84
+
+  # PyMuPDF (imported as fitz) — converts PDF files to images page by page.
+  # Tesseract can only read images, not PDFs directly. PyMuPDF is
+  # faster and lighter than pdf2image (no Poppler dependency needed).
+  PyMuPDF==1.25.3
+
+  # Pillow — Python image library. Handles image loading, saving,
+  # format conversion, and resizing. Used as the bridge between
+  # OpenCV (numpy arrays) and HuggingFace (PIL images).
+  Pillow==10.4.0
+
+
+  # ─────────────────────────────────────────────────────────────
+  # EMBEDDINGS + VECTOR DATABASE
+  # ─────────────────────────────────────────────────────────────
+
+  # sentence-transformers — generates dense vector embeddings for
+  # document text. Used to store documents in ChromaDB so we can
+  # do semantic search across all uploaded documents
+  # (e.g., "find the invoice with the highest total").
+  sentence-transformers==3.0.1
+
+  # ChromaDB — local vector database. Stores document embeddings
+  # and metadata. Enables multi-document retrieval — ask a question
+  # and ChromaDB finds which stored document is most relevant
+  # before LayoutLMv3 extracts the answer.
+  chromadb==0.5.5
+
+
+  # ─────────────────────────────────────────────────────────────
+  # BACKEND
+  # ─────────────────────────────────────────────────────────────
+
+  # FastAPI — REST API framework. Exposes all modules as HTTP endpoints
+  # so the Gradio frontend can call them. Chosen for automatic
+  # request validation, async support, and auto-generated API docs.
+  fastapi==0.112.0
+
+  # uvicorn — ASGI server that runs FastAPI. Handles concurrent
+  # requests efficiently using async I/O.
+  uvicorn==0.30.6
+
+  # python-multipart — required by FastAPI to handle file uploads
+  # (document images and PDFs sent from the frontend).
+  python-multipart==0.0.9
+
+
+  # ─────────────────────────────────────────────────────────────
+  # FRONTEND
+  # ─────────────────────────────────────────────────────────────
+
+  # Gradio — HuggingFace-native UI framework. Chosen over Streamlit
+  # because it's built specifically for ML model demos. Has native
+  # components for image upload, answer highlighting on documents,
+  # and confidence score display. Standard tool in the HuggingFace
+  # ecosystem — same framework used to demo models on HuggingFace Spaces.
+  gradio==4.42.0
+
+
+  # ─────────────────────────────────────────────────────────────
+  # UTILITIES
+  # ─────────────────────────────────────────────────────────────
+
+  # numpy — numerical computing. Used for image array manipulation
+  # in the preprocessing pipeline (OpenCV works on numpy arrays).
+  numpy==1.26.4
+
+  # pandas — data manipulation. Used for loading evaluation results,
+  # computing aggregate metrics, and exporting reports.
+  pandas==2.2.2
+
+  # scikit-learn — used for supplementary evaluation metrics
+  # (precision, recall) and train/test splitting utilities.
+  scikit-learn==1.5.1
+
+  # python-dotenv — loads environment variables from .env file
+  # into Python. Keeps credentials out of source code.
+  python-dotenv==1.0.1
+
+  # pydantic — data validation for FastAPI request/response models.
+  # Ensures incoming API requests have the correct types and fields.
+  pydantic==2.8.2
+
+  # pydantic-settings — extends pydantic to load and validate
+  # settings from environment variables. Used in config.py.
+  pydantic-settings==2.4.0
+
+  # requests — HTTP client. Used to call external APIs and for
+  # inter-service communication in tests.
+  requests==2.32.3
+  
+  # huggingface-hub — manages model downloads from HuggingFace Hub.
+  # Handles authentication (HF token), caching, and version pinning
+  # for LayoutLMv3 model weights.
+  huggingface-hub==0.24.6

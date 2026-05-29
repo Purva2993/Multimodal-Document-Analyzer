@@ -1,0 +1,25 @@
+ # Environment
+  .env
+
+  # Python
+  __pycache__/
+  *.py[cod]
+  venv/
+  .venv/
+
+  # Data
+  data/chroma_db/
+  data/raw/
+  data/processed/
+
+  # Models (large files)
+  models/fine_tuned/
+
+  # HuggingFace cache
+  ~/.cache/huggingface/
+  
+  # OS
+  .DS_Store
+
+  # Notebooks
+  .ipynb_checkpoints/
